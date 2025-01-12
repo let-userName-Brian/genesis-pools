@@ -87,7 +87,7 @@ const ProcessAccordions: React.FC = () => {
             textAlign: isMobile ? "center" : "left",
           }}
         >
-          Or process to get your pool ready for any season:
+          Our process to get your pool ready for any season:
         </Typography>
       </Box>
       <Box sx={{ width: "100%" }}>

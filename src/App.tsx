@@ -52,6 +52,7 @@ const App: React.FC = () => {
               marginTop: "1.5rem",
               flexDirection: "column",
               gap: "6.375rem",
+              overflowX: "hidden",
             }}
           >
             <MainHero />
