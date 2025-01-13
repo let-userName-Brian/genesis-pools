@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
               lineHeight: "1.5rem",
             }}
           >
-            Genius Pools
+            Genesis Pools
           </Typography>
         </Box>
       </Box>
@@ -121,7 +121,7 @@ const Footer: React.FC = () => {
             textAlign: isMobile ? "center" : "left",
           }}
         >
-          Email: info@geniuspools.com
+          Email: info@Genesisuspools.com
         </Typography>
 
         <Typography

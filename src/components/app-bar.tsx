@@ -66,7 +66,7 @@ const MainAppBar: React.FC = () => {
               lineHeight: "1.5rem",
             }}
           >
-            Genius Pools
+            Genesis Pools
           </Typography>
         </Box>
 
