@@ -1,25 +1,25 @@
 import {
   Box,
-  IconButton,
+  SvgIcon,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import LearnMoreIcon from "../icons/learn-more-button";
 import ChemistryIcon from "../icons/chemistry";
 import RepairIcon from "../icons/repair";
 import SeasonalIcon from "../icons/seasonal";
 import RegMaintIcon from "../icons/reg-maint";
-import { useState } from "react";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import SchoolIcon from "@mui/icons-material/School";
 
-type Service = {
+interface Service {
   title: string;
-  image: React.FC<{
-    stroke?: string;
-    height?: string;
-    width?: string;
-  }>;
-  imageStroke: string;
+  image:
+    | React.ComponentType<{ height?: string; width?: string; stroke?: string }>
+    | React.ComponentType<{ sx?: any }>;
+  isSvgComponent?: boolean; // Add this to distinguish between types
+  imageStroke?: string;
+  addPaddingLeft?: boolean;
   description: string;
   bgColor: string;
   titleBgColor: string;
@@ -27,47 +27,42 @@ type Service = {
   learnMoreStroke: string;
   learnMoreFill: string;
   boxShadow: string;
-};
-
-const LearnMoreButton: React.FC<{
-  service: Service;
-}> = ({ service }) => {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        gap: "1rem",
-        alignItems: "center",
-      }}
-    >
-      <IconButton sx={{ padding: 0 }}>
-        <LearnMoreIcon
-          stroke={service.learnMoreStroke}
-          fill={service.learnMoreFill}
-        />
-      </IconButton>
-      <Typography sx={{ color: service.learnMoreColor }}>Learn more</Typography>
-    </Box>
-  );
-};
-
+}
 const ServiceImage: React.FC<{
   service: Service;
 }> = ({ service }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Box
       sx={{
         height: { xs: "13rem", sm: "15rem", md: "20rem" },
         maxHeight: "20rem",
         width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <service.image
-        stroke={service.imageStroke}
-        height={"100%"}
-        width={"100%"}
-      />
+      {!service.isSvgComponent ? (
+        <service.image
+          height="100%"
+          width="100%"
+          stroke={service.imageStroke}
+          sx={{
+            paddingLeft: service.addPaddingLeft ? "2.5rem" : "0",
+          }}
+        />
+      ) : (
+        <SvgIcon
+          component={service.image as React.ComponentType<{ sx?: any }>}
+          sx={{
+            fontSize: isMobile ? "12rem" : "20rem",
+            color: service.imageStroke,
+            paddingLeft: service.addPaddingLeft ? "2.5rem" : "0",
+          }}
+        />
+      )}
     </Box>
   );
 };
@@ -75,15 +70,26 @@ const ServiceImage: React.FC<{
 const Services: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [modalOpen, setModalOpen] = useState(false);
   const boxShadow = "1px 4px 1px rgba(0, 0, 0, 0.9)";
+  /**
+   * List of services:
+   * Clean Ups (green to clean)
+   * Weekly maintenance
+   * Service/Repairs
+   * Pool School
+   * Stain removal
+   * Delivery chemicals/supplies
+   * Pressure washing Above grounds
+   * Salt Systems
+   * Spas
+   */
   const services: Service[] = [
     {
-      title: "Regular Maintenance",
+      title: "Clean Ups",
       image: RegMaintIcon,
       imageStroke: "#000000",
       description:
-        "Weekly or bi-weekly pool cleaning, skimming, vacuuming, and filter maintenance to keep your pool pristine.",
+        "Specialized green-to-clean spa and pool restoration, transforming neglected pools or spas into sparkling oases.",
       bgColor: "#F3F3F3",
       titleBgColor: "#92D2FE",
       learnMoreColor: "#000000",
@@ -92,11 +98,13 @@ const Services: React.FC = () => {
       boxShadow: boxShadow,
     },
     {
-      title: "Water Chemistry",
-      image: ChemistryIcon,
+      title: "Weekly Maintenance",
+      image: EngineeringIcon,
+      isSvgComponent: true,
+      addPaddingLeft: true,
       imageStroke: "#000000",
       description:
-        "Professional water testing and chemical balancing to ensure safe, crystal-clear water for swimming.",
+        "Comprehensive weekly pool care including cleaning, chemical balancing, and equipment checks.",
       bgColor: "#92D2FE",
       titleBgColor: "#FFFFFF",
       learnMoreColor: "#000000",
@@ -105,11 +113,11 @@ const Services: React.FC = () => {
       boxShadow: boxShadow,
     },
     {
-      title: "Equipment Repair",
+      title: "Service & Repairs",
       image: RepairIcon,
       imageStroke: "#FFFFFF",
       description:
-        "Expert diagnosis and repair of pumps, filters, heaters, and other pool equipment to maintain optimal performance.",
+        "Expert diagnosis and repair of all pool equipment, including pumps, filters, and salt systems.",
       bgColor: "black",
       titleBgColor: "#FFFFFF",
       learnMoreColor: "#FFFFFF",
@@ -118,17 +126,44 @@ const Services: React.FC = () => {
       boxShadow: "none",
     },
     {
-      title: "Seasonal Services",
-      image: SeasonalIcon,
+      title: "Pool School",
+      image: SchoolIcon,
+      isSvgComponent: true,
       imageStroke: "#000000",
       description:
-        "Pool opening, closing, and winterization services to protect your investment throughout the changing seasons.",
+        "Personalized training sessions to help pool owners understand maintenance and chemical balance.",
       bgColor: "#F3F3F3",
       titleBgColor: "#92D2FE",
       learnMoreColor: "#000000",
       learnMoreStroke: "#FFFFFF",
       learnMoreFill: "#000000",
       boxShadow: boxShadow,
+    },
+    {
+      title: "Chemical Delivery",
+      image: ChemistryIcon,
+      imageStroke: "#000000",
+      description:
+        "Convenient delivery of pool chemicals and supplies directly to your door.",
+      bgColor: "#92D2FE",
+      titleBgColor: "#FFFFFF",
+      learnMoreColor: "#000000",
+      learnMoreStroke: "#FFFFFF",
+      learnMoreFill: "#000000",
+      boxShadow: boxShadow,
+    },
+    {
+      title: "Specialty Services",
+      image: SeasonalIcon,
+      imageStroke: "#FFFFFF",
+      description:
+        "Specialized services including salt systems, stain removal, pressure washing above grounds, and spa maintenance.",
+      bgColor: "black",
+      titleBgColor: "#FFFFFF",
+      learnMoreColor: "#FFFFFF",
+      learnMoreStroke: "#000000",
+      learnMoreFill: "#FFFFFF",
+      boxShadow: "none",
     },
   ];
 
@@ -234,7 +269,20 @@ const Services: React.FC = () => {
               >
                 {service.title}
               </Typography>
-              {!isMobile && <LearnMoreButton service={service} />}
+              {!isMobile && (
+                <Typography
+                  sx={{
+                    color: service.learnMoreColor,
+                    fontFamily: "inherit",
+                    textAlign: "center",
+                    fontSize: "1.25rem",
+                    lineHeight: "1.5rem",
+                    fontWeight: 600,
+                  }}
+                >
+                  {service.description}
+                </Typography>
+              )}
             </Box>
             {/* Right side */}
             <Box sx={{ flex: 1 }}>
@@ -245,10 +293,20 @@ const Services: React.FC = () => {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  marginLeft: "-2rem",
                 }}
               >
-                <LearnMoreButton service={service} />
+                <Typography
+                  sx={{
+                    color: service.learnMoreColor,
+                    fontFamily: "inherit",
+                    textAlign: "center",
+                    fontSize: "1rem",
+                    lineHeight: "1.25rem",
+                    fontWeight: "medium",
+                  }}
+                >
+                  {service.description}
+                </Typography>
               </Box>
             )}
           </Box>

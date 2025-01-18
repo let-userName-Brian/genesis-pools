@@ -15,7 +15,19 @@ import StarIcon from "../icons/star";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 
-const MainAppBar: React.FC = () => {
+interface AppBarProps {
+  onServicesClick: () => void;
+  onProcessClick: () => void;
+  onTestimonialsClick: () => void;
+  onContactClick: () => void;
+}
+
+const MainAppBar: React.FC<AppBarProps> = ({
+  onServicesClick,
+  onProcessClick,
+  onTestimonialsClick,
+  onContactClick,
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -96,24 +108,27 @@ const MainAppBar: React.FC = () => {
                   fontFamily: "inherit",
                 }}
               >
-                <MenuItem onClick={handleClose}>Services</MenuItem>
-                <MenuItem onClick={handleClose}>Process</MenuItem>
-                <MenuItem onClick={handleClose}>Testimonials</MenuItem>
-                <MenuItem onClick={handleClose}>Contact Us</MenuItem>
+                <MenuItem onClick={onServicesClick}>Services</MenuItem>
+                <MenuItem onClick={onProcessClick}>Process</MenuItem>
+                <MenuItem onClick={onTestimonialsClick}>Testimonials</MenuItem>
+                <MenuItem onClick={onContactClick}>Contact Us</MenuItem>
               </Menu>
             </>
           ) : (
             <>
-              <StyledUnderlinedButton color="inherit">
+              <StyledUnderlinedButton color="inherit" onClick={onServicesClick}>
                 Services
               </StyledUnderlinedButton>
-              <StyledUnderlinedButton color="inherit">
+              <StyledUnderlinedButton color="inherit" onClick={onProcessClick}>
                 Process
               </StyledUnderlinedButton>
-              <StyledUnderlinedButton color="inherit">
+              <StyledUnderlinedButton
+                color="inherit"
+                onClick={onTestimonialsClick}
+              >
                 Testimonials
               </StyledUnderlinedButton>
-              <StyledContactUsButton color="inherit">
+              <StyledContactUsButton color="inherit" onClick={onContactClick}>
                 Contact Us
               </StyledContactUsButton>
             </>

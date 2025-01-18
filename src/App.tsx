@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Container} from "@mui/material";
+import React, { useRef } from "react";
+import { Box, Container } from "@mui/material";
 import MainAppBar from "./components/app-bar";
 import MainHero from "./components/main-hero";
 import ProcessAccordions from "./components/process-accordions";
@@ -7,8 +7,18 @@ import Services from "./components/services";
 import ContactUs from "./components/contact-us";
 import Testimonials from "./components/testimonials";
 import Footer from "./components/footer";
+import AdditionalInfo from "./components/additional-info";
 
 const App: React.FC = () => {
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const processRef = useRef<HTMLDivElement>(null);
+  const testimonialsRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
+
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <Box
       sx={{
@@ -45,7 +55,12 @@ const App: React.FC = () => {
             flexDirection: "column",
           }}
         >
-          <MainAppBar />
+          <MainAppBar
+            onServicesClick={() => scrollToSection(servicesRef)}
+            onProcessClick={() => scrollToSection(processRef)}
+            onTestimonialsClick={() => scrollToSection(testimonialsRef)}
+            onContactClick={() => scrollToSection(contactRef)}
+          />
           <Box
             sx={{
               display: "flex",
@@ -55,11 +70,20 @@ const App: React.FC = () => {
               overflowX: "hidden",
             }}
           >
-            <MainHero />
-            <Services />
-            <ProcessAccordions />
-            <Testimonials />
-            <ContactUs />
+            <MainHero onContactClick={() => scrollToSection(contactRef)}/>
+            <AdditionalInfo />
+            <Box ref={servicesRef}>
+              <Services />
+            </Box>
+            <Box ref={processRef}>
+              <ProcessAccordions />
+            </Box>
+            <Box ref={testimonialsRef}>
+              <Testimonials />
+            </Box>
+            <Box ref={contactRef}>
+              <ContactUs />
+            </Box>
             <Footer />
           </Box>
         </Container>

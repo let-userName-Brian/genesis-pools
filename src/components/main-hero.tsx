@@ -6,8 +6,17 @@ import {
   useTheme,
 } from "@mui/material";
 import main_logo from "../assets/main-logo.svg";
+interface MainHeroProps {
+  onContactClick: () => void;
+}
 
-function Title() {
+interface BookButtonProps {
+  width?: string;
+  padding?: string;
+  onClick: () => void;
+}
+
+const Title: React.FC = () => {
   return (
     <Typography
       sx={{
@@ -17,12 +26,12 @@ function Title() {
         lineHeight: "3.5rem",
       }}
     >
-      Elevating your pool care to crystal perfection
+      Reliable & Affordable Pool & Spa Care in Panama City, FL
     </Typography>
   );
-}
+};
 
-function Description() {
+const Description: React.FC = () => {
   return (
     <Typography
       sx={{
@@ -32,21 +41,23 @@ function Description() {
         lineHeight: "2rem",
       }}
     >
-      We are a team of experienced pool maintenance professionals who are
-      dedicated to keeping your pool in top condition. Our services include
-      water chemistry, equipment repair, cleaning services, and seasonal
-      maintenance.
+      Our team is dedicated to delivering exceptional value through consistent
+      work and a commitment to customer satisfaction. We offer clean ups, weekly
+      maintenance, services, and repairs to keep your pool in perfect condition
+      to the Bay and Gulf counties.
     </Typography>
   );
-}
+};
 
-function BookButton({
+const BookButton: React.FC<BookButtonProps> = ({
   width = "fit-content",
   padding = "0.5rem 2rem",
+  onClick,
 }: {
   width?: string;
   padding?: string;
-}) {
+  onClick: () => void;
+}) => {
   return (
     <Button
       variant="contained"
@@ -66,13 +77,14 @@ function BookButton({
           color: "black",
         },
       }}
+      onClick={onClick}
     >
       Book a consultation
     </Button>
   );
-}
+};
 
-function DesktopLayout() {
+const DesktopLayout: React.FC<MainHeroProps> = ({ onContactClick }) => {
   return (
     <Box
       sx={{
@@ -114,7 +126,11 @@ function DesktopLayout() {
             justifySelf: "flex-end",
           }}
         >
-          <BookButton width="100%" padding="1.5rem 2rem" />
+          <BookButton
+            width="100%"
+            padding="1.5rem 2rem"
+            onClick={onContactClick}
+          />
         </Box>
       </Box>
       {/* Right column */}
@@ -144,10 +160,10 @@ function DesktopLayout() {
       </Box>
     </Box>
   );
-}
+};
 
 // 3) Mobile layout
-function MobileLayout() {
+const MobileLayout: React.FC<MainHeroProps> = ({ onContactClick }) => {
   return (
     <Box display="flex" flexDirection="column" gap={2}>
       <Box sx={{ textAlign: "left" }}>
@@ -169,15 +185,28 @@ function MobileLayout() {
         <Description />
       </Box>
       <Box sx={{ textAlign: "left", marginTop: "2rem" }}>
-        <BookButton width="100%" padding="1.5rem 2rem" />
+        <BookButton
+          width="100%"
+          padding="1.5rem 2rem"
+          onClick={onContactClick}
+        />
       </Box>
     </Box>
   );
-}
-const MainHero: React.FC = () => {
+};
+
+const MainHero: React.FC<MainHeroProps> = ({ onContactClick }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  return <Box>{isMobile ? <MobileLayout /> : <DesktopLayout />}</Box>;
+  return (
+    <Box>
+      {isMobile ? (
+        <MobileLayout onContactClick={onContactClick} />
+      ) : (
+        <DesktopLayout onContactClick={onContactClick} />
+      )}
+    </Box>
+  );
 };
 export default MainHero;
