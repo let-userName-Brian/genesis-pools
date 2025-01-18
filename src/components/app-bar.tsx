@@ -108,10 +108,38 @@ const MainAppBar: React.FC<AppBarProps> = ({
                   fontFamily: "inherit",
                 }}
               >
-                <MenuItem onClick={onServicesClick}>Services</MenuItem>
-                <MenuItem onClick={onProcessClick}>Process</MenuItem>
-                <MenuItem onClick={onTestimonialsClick}>Testimonials</MenuItem>
-                <MenuItem onClick={onContactClick}>Contact Us</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    onServicesClick();
+                    handleClose();
+                  }}
+                >
+                  Services
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    onProcessClick();
+                    handleClose();
+                  }}
+                >
+                  Process
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    onTestimonialsClick();
+                    handleClose();
+                  }}
+                >
+                  Testimonials
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    onContactClick();
+                    handleClose();
+                  }}
+                >
+                  Contact Us
+                </MenuItem>
               </Menu>
             </>
           ) : (
